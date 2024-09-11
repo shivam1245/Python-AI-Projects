@@ -68,3 +68,48 @@ model.save('textgenerator.h5')  # save the model
 
 model = tf.keras.models.load_model('textgenerator.h5')  # Read saved model
 
+
+# Function to get the next index value
+def sample(preds, temperature=1.0):
+    preds = np.asarray(preds).astype('float64')
+    preds = np.log(preds) / temperature
+    exp_preds = np.exp(preds)
+    preds = exp_preds / np.sum(exp_preds)
+    probas = np.random.multinomial(1, preds, 1)
+    return np.argmax(probas)
+
+
+# Function to generate text
+def generate_text(length, temperature):
+    start_index = random.randint(0, len(text) - SEQ_LENGTH - 1)
+    generated = ''
+    sentence = text[start_index: start_index + SEQ_LENGTH]
+    generated += sentence
+    for i in range(length):
+        x_predictions = np.zeros((1, SEQ_LENGTH, len(characters)))
+        for t, char in enumerate(sentence):
+            x_predictions[0, t, char_to_index[char]] = 1
+
+        predictions = model.predict(x_predictions, verbose=0)[0]
+        next_index = sample(predictions,
+                            temperature)
+        next_character = index_to_char[next_index]
+
+        generated += next_character
+        sentence = sentence[1:] + next_character
+    return generated
+
+
+print('generating text.....')
+print(generate_text(300, 0.2))
+
+print("----------0.4--------")
+print(generate_text(300, 0.4))
+print("----------0.5--------")
+print(generate_text(300, 0.5))
+print("----------0.6--------")
+print(generate_text(300, 0.6))
+print("----------0.7--------")
+print(generate_text(300, 0.7))
+print("----------0.8--------")
+print(generate_text(300, 0.8))
