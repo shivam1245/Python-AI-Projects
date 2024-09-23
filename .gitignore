@@ -1,5 +1,6 @@
+
+.env
+.env/
+# Python Environment
+.venv
 venv/
-
-
-
-textgenerator.h5
