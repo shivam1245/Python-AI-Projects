@@ -4,6 +4,3 @@
 # Python Environment
 .venv
 venv/
-
-# model
-textgenerator.h5
