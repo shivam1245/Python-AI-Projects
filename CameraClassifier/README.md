@@ -153,6 +153,8 @@ Notes:
 - If Tkinter is not available in your environment, the GUI import test is skipped automatically.
 - Optional: if you use pytest, you can run it as a module too: `python -m pytest -q CameraClassifier/test_camera_classifier.py`.
 
+### Screenshot
+![Prediction](image.png)
 ### 2) Manual GUI test (with webcam)
 - Start: `python -m CameraClassifier.main`
 - Enter two class names when prompted (e.g., Open Hand / Closed Fist).

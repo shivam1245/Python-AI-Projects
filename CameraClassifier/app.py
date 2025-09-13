@@ -1,10 +1,5 @@
 """
-Camera Classifier v0.1 Alpha
-Copyright (c) NeuralNine
-
-Instagram: @neuralnine
-YouTube: NeuralNine
-Website: www.neuralnine.com
+Camera Classifier Model Training and Prediction.
 """
 
 import tkinter as tk
