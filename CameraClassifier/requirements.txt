@@ -1,0 +1,8 @@
+# Requirements for CameraClassifier only
+# Note: Tkinter (tk) is part of the Python standard library; on some Linux distros you may need to install system package `python3-tk`.
+
+numpy>=2.0.0,<3
+opencv-python==4.10.0.84
+Pillow==10.4.0
+scikit-learn==1.5.2
+scipy>=1.14.1
