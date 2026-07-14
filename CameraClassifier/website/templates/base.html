@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}CameraClassifier{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <!-- ── Top Navigation Header ───────────────────────────────────── -->
+  <header class="top-nav">
+    <div class="top-logo">
+      <span class="top-logo-icon">📷</span>
+      <span class="top-logo-name">CameraClassifier</span>
+    </div>
+
+    <nav class="top-tabs" aria-label="Main navigation">
+      <a href="/"     class="top-tab {% if active == 'overview' %}active{% endif %}">
+        <span>📋</span> Feature Overview
+      </a>
+      <a href="/demo" class="top-tab {% if active == 'demo' %}active{% endif %}">
+        <span>🎥</span> Live Demo
+      </a>
+      <a href="/object" class="top-tab {% if active == 'object' %}active{% endif %}">
+        <span>🔍</span> Object Detect
+      </a>
+    </nav>
+
+    <div class="top-meta">v2.0 &nbsp;·&nbsp; Python ML</div>
+  </header>
+
+  {% block body %}{% endblock %}
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>
