@@ -1,8 +1,16 @@
-# Requirements for CameraClassifier only
-# Note: Tkinter (tk) is part of the Python standard library; on some Linux distros you may need to install system package `python3-tk`.
+# Requirements for CameraClassifier
+# Note: Tkinter (tk) is part of the Python standard library; on some Linux distros
+# you may need the system package: sudo apt-get install python3-tk
 
+# Core
 numpy>=2.0.0,<3
 opencv-python==4.10.0.84
 Pillow==10.4.0
 scikit-learn==1.5.2
 scipy>=1.14.1
+
+# Tier 1 — Emotion Analysis
+# fer uses TensorFlow internally; tensorflow is pulled as a transitive dependency.
+# First run with emotion enabled will be slow while TF initializes.
+fer>=22.5.1
+tensorflow>=2.13.0
