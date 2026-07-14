@@ -1,6 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
 
-.env
-.env/
-# Python Environment
-.venv
+# Virtual environments
 venv/
+.venv/
+env/
+
+# Model weights (large binary files)
+*.pt
+*.pth
+*.pkl
+*.h5
+*.onnx
+
+# IDE / tools
+.claude/
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Misnamed pip install artifacts
+=*/
