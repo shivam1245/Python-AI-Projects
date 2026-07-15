@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}CameraClassifier — Object Detection{% endblock %}
+
+{% block body %}
+<div class="obj-layout">
+
+  <!-- ── Camera feed ───────────────────────────────────────────────── -->
+  <section class="obj-camera">
+    <div class="feed-wrapper">
+      <img id="objFeed" src="/object_feed" alt="Object detection feed" />
+
+      <!-- Object count badge on video -->
+      <div class="obj-count-badge" id="objBadge" style="display:none">
+        <span id="badgeCount">0</span> objects
+      </div>
+
+      <!-- Status indicator -->
+      <div class="feed-status">
+        <span class="live-dot"></span> LIVE
+      </div>
+
+      <!-- Disabled overlay when detection is off -->
+      <div class="obj-off-overlay" id="offOverlay">
+        <span class="obj-off-icon">🔍</span>
+        <span class="obj-off-msg">Enable detection to start</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Side panel ────────────────────────────────────────────────── -->
+  <aside class="obj-panel">
+
+    <!-- Detection toggle -->
+    <div class="ctrl-card">
+      <div class="ctrl-card-title"><span>⚡</span> Controls</div>
+
+      {% if not obj_available %}
+      <div class="obj-unavail-banner">
+        ⚠️ ultralytics not installed.<br>
+        <code>pip install ultralytics</code>
+      </div>
+      {% else %}
+      <button class="tog-btn {% if obj_enabled %}active{% endif %}"
+              id="togDetect" onclick="toggleDetect()">
+        <span class="tog-icon">🔍</span>
+        <div class="tog-text">
+          <span class="tog-name">Object Detection</span>
+          <span class="tog-sub">YOLOv8n · 80 COCO classes</span>
+        </div>
+        <span class="tog-pill {% if obj_enabled %}on{% else %}off{% endif %}"
+              id="pillDetect">{% if obj_enabled %}ON{% else %}OFF{% endif %}</span>
+      </button>
+      {% endif %}
+
+      <!-- Confidence threshold slider -->
+      <div class="threshold-wrap">
+        <div class="threshold-label-row">
+          <span class="threshold-label">Min. Confidence</span>
+          <span class="threshold-val" id="confLabel">40%</span>
+        </div>
+        <input type="range" class="conf-slider" id="confSlider"
+               min="10" max="90" value="40"
+               oninput="onThresholdChange(this.value)"
+               onchange="applyThreshold(this.value)" />
+        <div class="threshold-ticks">
+          <span>10%</span><span>50%</span><span>90%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live detections list -->
+    <div class="ctrl-card obj-list-card">
+      <div class="ctrl-card-title">
+        <span>📋</span> Detections
+        <span class="ctrl-title-hint" id="detCount"></span>
+      </div>
+      <div class="obj-det-list" id="detList">
+        <p class="empty-msg" id="detEmpty">Enable detection to see objects</p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="ctrl-card">
+      <div class="ctrl-card-title"><span>📊</span> Session Stats</div>
+      <div class="obj-stats-grid">
+        <div class="obj-stat">
+          <span class="obj-stat-num" id="statTotal">0</span>
+          <span class="obj-stat-lbl">Detections</span>
+        </div>
+        <div class="obj-stat">
+          <span class="obj-stat-num" id="statUnique">0</span>
+          <span class="obj-stat-lbl">Unique Classes</span>
+        </div>
+        <div class="obj-stat">
+          <span class="obj-stat-num" id="statFrames">0</span>
+          <span class="obj-stat-lbl">Frames Analysed</span>
+        </div>
+        <div class="obj-stat">
+          <span class="obj-stat-num" id="statFps">—</span>
+          <span class="obj-stat-lbl">Poll Rate</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info card -->
+    <div class="ctrl-card hint-card">
+      <div class="ctrl-card-title"><span>💡</span> About</div>
+      <ol class="how-to">
+        <li>Click <strong>Enable Detection</strong> to start YOLOv8.</li>
+        <li>The model downloads <strong>~6 MB</strong> of COCO weights on first run.</li>
+        <li>Adjust the slider to filter low-confidence detections.</li>
+        <li>80 object categories: people, vehicles, animals, furniture, and more.</li>
+      </ol>
+    </div>
+
+  </aside>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    window.__OBJ_INIT__ = {
+      enabled:   {{ obj_enabled | tojson }},
+      available: {{ obj_available | tojson }},
+    };
+  </script>
+  <script src="{{ url_for('static', filename='object.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}CameraClassifier — Live Demo{% endblock %}
+
+{% block body %}
+<div class="demo-layout">
+
+  <!-- ── Camera Panel ──────────────────────────────────────────────── -->
+  <section class="camera-panel">
+
+    <div class="feed-wrapper">
+      <img id="videoFeed" src="/video_feed" alt="Live camera feed" />
+
+      <!-- Live prediction badge overlaid on video -->
+      <div class="feed-overlay" id="feedOverlay" style="display:none">
+        <span id="overlayClass">—</span>
+        <span id="overlayConf">—</span>
+      </div>
+
+      <!-- Status indicator -->
+      <div class="feed-status">
+        <span class="live-dot"></span> LIVE
+      </div>
+    </div>
+
+    <!-- Results strip under camera -->
+    <div class="result-strip">
+      <div class="result-block">
+        <span class="result-label">CLASS</span>
+        <span class="result-val" id="resClass">—</span>
+      </div>
+      <div class="result-block">
+        <span class="result-label">CONFIDENCE</span>
+        <div class="conf-wrap">
+          <div class="conf-bar"><div class="conf-fill" id="confFill"></div></div>
+          <span class="conf-pct" id="confPct">0%</span>
+        </div>
+      </div>
+      <div class="result-block">
+        <span class="result-label">EMOTION</span>
+        <span class="result-val emotion-val" id="resEmotion">—</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── Controls Panel ───────────────────────────────────────────── -->
+  <aside class="controls-panel">
+
+    <!-- ── Feature Toggles ────────────────────────────────────────── -->
+    <div class="ctrl-card">
+      <div class="ctrl-card-title">
+        <span>⚡</span> Feature Toggles
+      </div>
+      <div class="toggle-grid">
+
+        <button class="tog-btn" id="togFace" onclick="toggle('face_detect')">
+          <span class="tog-icon">👤</span>
+          <div class="tog-text">
+            <span class="tog-name">Face Detect</span>
+            <span class="tog-sub">Haar cascade overlay</span>
+          </div>
+          <span class="tog-pill off" id="pillFace">OFF</span>
+        </button>
+
+        <button class="tog-btn" id="togEmotion" onclick="toggle('emotion')">
+          <span class="tog-icon">😊</span>
+          <div class="tog-text">
+            <span class="tog-name">Emotion Analysis</span>
+            <span class="tog-sub">FER · 7 emotions</span>
+          </div>
+          <span class="tog-pill off" id="pillEmotion">OFF</span>
+        </button>
+
+        <button class="tog-btn" id="togAuto" onclick="toggle('auto_predict')">
+          <span class="tog-icon">🔁</span>
+          <div class="tog-text">
+            <span class="tog-name">Auto Predict</span>
+            <span class="tog-sub">Classifies every frame</span>
+          </div>
+          <span class="tog-pill off" id="pillAuto">OFF</span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- ── Classes ────────────────────────────────────────────────── -->
+    <div class="ctrl-card">
+      <div class="ctrl-card-title">
+        <span>🏷️</span> Classes
+        <span class="ctrl-title-hint" id="classCount">0 classes</span>
+      </div>
+
+      <div class="class-list" id="classList">
+        <p class="empty-msg" id="emptyMsg">No classes yet. Add one below.</p>
+      </div>
+
+      <div class="add-class-row">
+        <input id="newClassInput" type="text" class="text-input"
+               placeholder="Class name…" maxlength="32"
+               onkeydown="if(event.key==='Enter') addNewClass()" />
+        <button class="btn-add" onclick="addNewClass()">+ Add</button>
+      </div>
+    </div>
+
+    <!-- ── Model Controls ─────────────────────────────────────────── -->
+    <div class="ctrl-card">
+      <div class="ctrl-card-title"><span>🧠</span> Model</div>
+      <div class="model-status-bar" id="modelStatusBar">
+        <span class="mstatus-dot untrained" id="mStatusDot"></span>
+        <span id="mStatusText">Not trained</span>
+      </div>
+      <div class="action-row">
+        <button class="act-btn primary" id="btnTrain" onclick="trainModel()">
+          <span>🧠</span> Train Model
+        </button>
+        <button class="act-btn" id="btnPredict" onclick="predictOnce()">
+          <span>🎯</span> Predict Once
+        </button>
+        <button class="act-btn danger" id="btnReset" onclick="resetAll()">
+          <span>🔄</span> Reset All
+        </button>
+      </div>
+    </div>
+
+    <!-- ── How to use ──────────────────────────────────────────────── -->
+    <div class="ctrl-card hint-card">
+      <div class="ctrl-card-title"><span>💡</span> Quick Guide</div>
+      <ol class="how-to">
+        <li>Add two or more class names below the Classes section.</li>
+        <li>Click <strong>Capture</strong> for each class (aim for 20–50 samples).</li>
+        <li>Click <strong>Train Model</strong> — wait for the "Trained" status.</li>
+        <li>Click <strong>Predict Once</strong> or enable <strong>Auto Predict</strong>.</li>
+        <li>Toggle <strong>Face Detect</strong> or <strong>Emotion</strong> for live overlays.</li>
+      </ol>
+    </div>
+
+  </aside>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    /* Seed initial state from server-side render */
+    window.__INIT_STATE__ = {{ state | tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='demo.js') }}"></script>
+{% endblock %}

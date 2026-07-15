@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+{% block title %}CameraClassifier — Feature Overview{% endblock %}
+
+{% block body %}
+  <!-- ── Sidebar ──────────────────────────────────────────────────── -->
+  <button class="hamburger" id="hamburger" aria-label="Open navigation">
+    <span></span><span></span><span></span>
+  </button>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">📷</span>
+      <div class="logo-text">
+        <span class="logo-name">CameraClassifier</span>
+        <span class="logo-ver">v2.0</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav" aria-label="Page sections">
+      <a href="#overview"  class="nav-link" data-section="overview"><span class="nav-icon">🏠</span><span>Overview</span></a>
+      <a href="#current"   class="nav-link" data-section="current"><span class="nav-icon">⚙️</span><span>Current Features</span></a>
+      <div class="nav-group-label">TIER 1 — LIVE</div>
+      <a href="#tier1"     class="nav-link" data-section="tier1"><span class="nav-icon">✅</span><span>Tier 1 Features</span><span class="nav-badge implemented">NEW</span></a>
+      <div class="nav-group-label">PLANNED</div>
+      <a href="#tier2"     class="nav-link" data-section="tier2"><span class="nav-icon">🔮</span><span>Tier 2 — Advanced</span></a>
+      <a href="#tier3"     class="nav-link" data-section="tier3"><span class="nav-icon">✨</span><span>Tier 3 — QoL</span></a>
+      <div class="nav-group-label">MORE</div>
+      <a href="#roadmap"   class="nav-link" data-section="roadmap"><span class="nav-icon">🗺️</span><span>Roadmap</span></a>
+      <a href="#install"   class="nav-link" data-section="install"><span class="nav-icon">🚀</span><span>Get Started</span></a>
+    </nav>
+    <div class="sidebar-footer">Python 3.9+ · OpenCV · scikit-learn</div>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ── Main content ─────────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- HERO -->
+    <section id="overview" class="section hero-section">
+      <div class="hero-text">
+        <div class="hero-badge">v2.0 — Now with Emotion AI</div>
+        <h1 class="hero-title"><span class="gradient-text">Camera</span>Classifier</h1>
+        <p class="hero-subtitle">Real-time webcam ML with face detection, emotion analysis and multi-class SVM classification — all in a Tkinter GUI.</p>
+        <div class="hero-stats">
+          <div class="stat-pill"><span class="stat-num" data-target="8">0</span><span class="stat-lbl">Baseline Features</span></div>
+          <div class="stat-pill"><span class="stat-num" data-target="4">0</span><span class="stat-lbl">v2.0 Features</span></div>
+          <div class="stat-pill"><span class="stat-num" data-target="7">0</span><span class="stat-lbl">Emotions Detected</span></div>
+          <div class="stat-pill"><span class="stat-num" data-target="9">0</span><span class="stat-lbl">Planned Features</span></div>
+        </div>
+        <div class="hero-actions">
+          <a href="#tier1"  class="btn btn-primary">Explore v2.0 Features</a>
+          <a href="/demo"   class="btn btn-primary" style="background:linear-gradient(135deg,#00e676,#00d4ff)">🎥 Try Live Demo</a>
+          <a href="#install" class="btn btn-ghost">Get Started →</a>
+        </div>
+      </div>
+      <div class="hero-mockup">
+        <div class="mockup-window">
+          <div class="mockup-bar">
+            <div class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+            <span class="mockup-bar-title">Camera Classifier</span>
+          </div>
+          <div class="mockup-feed">
+            <div class="scanline"></div>
+            <div class="face-box">
+              <span class="corner tl"></span><span class="corner tr"></span>
+              <span class="corner bl"></span><span class="corner br"></span>
+              <div class="face-icon">🧑</div>
+            </div>
+            <div class="emotion-chip">😄 Happy 91%</div>
+          </div>
+          <div class="mockup-info">
+            <div class="info-row primary">CLASS: Open Hand &nbsp;·&nbsp; CONFIDENCE: 87%</div>
+            <div class="info-row accent">EMOTION: Happy (91%)</div>
+          </div>
+          <div class="mockup-btns">
+            <div class="mbtn green">Auto Predict: ON</div>
+            <div class="mbtn orange">Emotion: ON</div>
+            <div class="mbtn blue">Face Detect: ON</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CURRENT FEATURES -->
+    <section id="current" class="section">
+      <div class="section-header">
+        <span class="tier-badge baseline">v1.0 Baseline</span>
+        <h2>Current Features</h2>
+        <p>The foundation — a complete binary webcam classifier with a polished GUI, no internet required.</p>
+      </div>
+      <div class="feature-grid cols-3">
+        <article class="card card-baseline reveal"><div class="card-icon-wrap purple">📹</div><div class="card-body"><h3>Live Webcam Preview</h3><p>640×480 OpenCV feed rendered in a Tkinter canvas, refreshed every 15 ms.</p><div class="tag-row"><span class="tag">OpenCV</span><span class="tag">Tkinter</span></div></div></article>
+        <article class="card card-baseline reveal"><div class="card-icon-wrap purple">🏷️</div><div class="card-body"><h3>Two-Class Sample Capture</h3><p>Click labeled buttons to save grayscale 150×150 thumbnails to class folders.</p><div class="tag-row"><span class="tag">OpenCV</span><span class="tag">Pillow</span></div></div></article>
+        <article class="card card-baseline reveal"><div class="card-icon-wrap purple">🧠</div><div class="card-body"><h3>Linear SVM Training</h3><p>Trains scikit-learn <code>SVC(kernel='linear')</code> on flattened 50×50 grayscale feature vectors.</p><div class="tag-row"><span class="tag">scikit-learn</span><span class="tag">NumPy</span></div></div></article>
+        <article class="card card-baseline reveal"><div class="card-icon-wrap purple">⚡</div><div class="card-body"><h3>Manual &amp; Auto Prediction</h3><p>Classify on demand or toggle continuous auto-prediction that classifies every frame.</p><div class="tag-row"><span class="tag">Real-time</span></div></div></article>
+        <article class="card card-baseline reveal"><div class="card-icon-wrap purple">✏️</div><div class="card-body"><h3>Custom Class Names</h3><p>Dialog prompts at startup let you name both classes. Defaults provided on cancel.</p><div class="tag-row"><span class="tag">Tkinter dialog</span></div></div></article>
+        <article class="card card-baseline reveal"><div class="card-icon-wrap purple">🔄</div><div class="card-body"><h3>Reset</h3><p>One click clears all captured images, wipes the trained model, and re-prompts.</p><div class="tag-row"><span class="tag">Stateless restart</span></div></div></article>
+      </div>
+    </section>
+
+    <!-- TIER 1 -->
+    <section id="tier1" class="section">
+      <div class="section-header">
+        <span class="tier-badge implemented">✅ v2.0 — Implemented</span>
+        <h2>Tier 1 Features</h2>
+        <p>High-impact additions shipped in v2.0 — face detection, emotion AI, unlimited classes, and confidence scoring.</p>
+      </div>
+      <article class="feature-spotlight reveal">
+        <div class="spotlight-icon">👤</div>
+        <div class="spotlight-body">
+          <div class="spotlight-header"><h3>Face Detection with Bounding Box</h3><span class="badge green">Implemented</span></div>
+          <p>Toggle a real-time green bounding box drawn around every detected face using OpenCV's built-in Haar cascade. No extra packages needed.</p>
+          <ul class="feature-list"><li>Detects multiple faces simultaneously</li><li>Visual "Face" label above each box</li><li>Toggle ON/OFF without restarting</li></ul>
+          <div class="tag-row"><span class="tag green">No extra dependencies</span><span class="tag">cv2.CascadeClassifier</span></div>
+        </div>
+        <div class="spotlight-visual face-demo"><div class="demo-feed"><div class="demo-face-box"><span class="dcorner tl"></span><span class="dcorner tr"></span><span class="dcorner bl"></span><span class="dcorner br"></span><div class="demo-face-label">Face</div></div></div></div>
+      </article>
+      <article class="feature-spotlight spotlight-reverse reveal">
+        <div class="spotlight-visual emotion-demo"><div class="demo-feed orange"><div class="demo-emotion-box"><span class="dcorner tl orange"></span><span class="dcorner tr orange"></span><span class="dcorner bl orange"></span><span class="dcorner br orange"></span><div class="demo-emotion-tag">😄 Happy 91%</div></div></div></div>
+        <div class="spotlight-body">
+          <div class="spotlight-header"><h3>Emotion Analysis</h3><span class="badge green">Implemented</span></div>
+          <p>Powered by FER + TensorFlow. Analyzes faces every 10 frames (~150 ms) and overlays an orange bounding box with the dominant emotion and confidence.</p>
+          <div class="emotion-pills">
+            <span class="epill happy">😄 Happy</span><span class="epill sad">😢 Sad</span><span class="epill angry">😠 Angry</span>
+            <span class="epill fear">😨 Fear</span><span class="epill surprise">😲 Surprise</span><span class="epill disgust">🤢 Disgust</span><span class="epill neutral">😐 Neutral</span>
+          </div>
+          <div class="tag-row"><span class="tag orange">fer &gt;= 22.5.1</span><span class="tag orange">TensorFlow</span><span class="tag">Lazy-loaded</span></div>
+        </div>
+        <div class="spotlight-icon">😊</div>
+      </article>
+      <div class="feature-grid cols-2">
+        <article class="card card-tier1 reveal">
+          <div class="card-icon-wrap green">🏷️</div>
+          <div class="card-body">
+            <div class="card-header-row"><h3>Multi-Class Classification</h3><span class="badge green">Implemented</span></div>
+            <p>Extends the classifier from 2 fixed classes to any number. Click "+ Add Class" to add more at runtime.</p>
+            <ul class="feature-list"><li>Dynamic class buttons added at runtime</li><li>SVM natively handles N-class problems</li><li>Separate numbered folders per class</li></ul>
+            <div class="tag-row"><span class="tag green">No extra dependencies</span></div>
+          </div>
+        </article>
+        <article class="card card-tier1 reveal">
+          <div class="card-icon-wrap green">📊</div>
+          <div class="card-body">
+            <div class="card-header-row"><h3>Confidence Score</h3><span class="badge green">Implemented</span></div>
+            <p>The SVM is trained with <code>probability=True</code>. Confidence % is shown alongside the predicted class label.</p>
+            <ul class="feature-list"><li>Shown as % on every prediction</li><li>Helps spot uncertain predictions</li><li>Works with 2 or more classes</li></ul>
+            <div class="tag-row"><span class="tag green">No extra dependencies</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- TIER 2 -->
+    <section id="tier2" class="section">
+      <div class="section-header">
+        <span class="tier-badge planned">🔮 Planned — Tier 2</span>
+        <h2>Advanced Features</h2>
+        <p>High-value additions that bring MediaPipe and deep learning to the app.</p>
+      </div>
+      <div class="feature-grid cols-2">
+        <article class="card card-tier2 reveal"><div class="card-icon-wrap amber">✋</div><div class="card-body"><div class="card-header-row"><h3>Hand Gesture Recognition</h3><span class="badge amber">Planned</span></div><p>Detect 21 hand landmarks and classify gestures like thumbs up, peace, and open palm.</p><div class="progress-wrap"><span>Implementation readiness</span><div class="progress-bar"><div class="progress-fill amber" style="width:70%"></div></div></div><div class="tag-row"><span class="tag amber">mediapipe</span></div></div></article>
+        <article class="card card-tier2 reveal"><div class="card-icon-wrap amber">🔄</div><div class="card-body"><div class="card-header-row"><h3>Head Pose Estimation</h3><span class="badge amber">Planned</span></div><p>Detect if the user is looking left, right, up, down, or forward using face landmarks + PnP.</p><div class="progress-wrap"><span>Implementation readiness</span><div class="progress-bar"><div class="progress-fill amber" style="width:55%"></div></div></div><div class="tag-row"><span class="tag amber">mediapipe</span></div></div></article>
+        <article class="card card-tier2 reveal"><div class="card-icon-wrap amber">👁️</div><div class="card-body"><div class="card-header-row"><h3>Eye Blink / Drowsiness</h3><span class="badge amber">Planned</span></div><p>Compute Eye Aspect Ratio (EAR) and alert when eyes stay closed longer than a threshold.</p><div class="progress-wrap"><span>Implementation readiness</span><div class="progress-bar"><div class="progress-fill amber" style="width:60%"></div></div></div><div class="tag-row"><span class="tag amber">mediapipe / dlib</span></div></div></article>
+        <article class="card card-tier2 reveal"><div class="card-icon-wrap amber">🎂</div><div class="card-body"><div class="card-header-row"><h3>Age &amp; Gender Estimation</h3><span class="badge amber">Planned</span></div><p>Estimate age range and gender from a face crop using DeepFace or OpenCV DNN models.</p><div class="progress-wrap"><span>Implementation readiness</span><div class="progress-bar"><div class="progress-fill amber" style="width:65%"></div></div></div><div class="tag-row"><span class="tag amber">deepface</span></div></div></article>
+      </div>
+    </section>
+
+    <!-- TIER 3 -->
+    <section id="tier3" class="section">
+      <div class="section-header">
+        <span class="tier-badge qol">✨ Planned — Tier 3</span>
+        <h2>Quality of Life Features</h2>
+        <p>Low-effort, high-polish improvements that make the app more informative and professional.</p>
+      </div>
+      <div class="feature-grid cols-3">
+        <article class="card card-tier3 reveal"><div class="card-icon-wrap blue">⚡</div><div class="card-body"><div class="card-header-row"><h3>Real-Time FPS Counter</h3><span class="badge blue">Planned</span></div><p>Overlay actual FPS in the camera feed corner. Zero new dependencies.</p><div class="tag-row"><span class="tag blue">No extra deps</span></div></div></article>
+        <article class="card card-tier3 reveal"><div class="card-icon-wrap blue">🎥</div><div class="card-body"><div class="card-header-row"><h3>Session Recording</h3><span class="badge blue">Planned</span></div><p>Save the annotated camera session as a <code>.mp4</code> using <code>cv2.VideoWriter</code>.</p><div class="tag-row"><span class="tag blue">No extra deps</span></div></div></article>
+        <article class="card card-tier3 reveal"><div class="card-icon-wrap blue">🔀</div><div class="card-body"><div class="card-header-row"><h3>Data Augmentation</h3><span class="badge blue">Planned</span></div><p>Auto-save flipped and rotated variants on capture. Multiplies training data 3–4×.</p><div class="tag-row"><span class="tag blue">No extra deps</span><span class="tag">Accuracy boost</span></div></div></article>
+        <article class="card card-tier3 reveal"><div class="card-icon-wrap blue">🌫️</div><div class="card-body"><div class="card-header-row"><h3>Background Blur</h3><span class="badge blue">Planned</span></div><p>Blur or replace background in real-time via MediaPipe Selfie Segmentation.</p><div class="tag-row"><span class="tag amber">mediapipe</span></div></div></article>
+        <article class="card card-tier3 reveal"><div class="card-icon-wrap blue">📸</div><div class="card-body"><div class="card-header-row"><h3>Snapshot with Annotations</h3><span class="badge blue">Planned</span></div><p>Save the current annotated frame as a <code>.png</code> with one button click.</p><div class="tag-row"><span class="tag blue">No extra deps</span></div></div></article>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap" class="section">
+      <div class="section-header">
+        <span class="tier-badge baseline">🗺️ Roadmap</span>
+        <h2>Development Timeline</h2>
+        <p>From a simple binary classifier to a full-featured real-time vision app.</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item done reveal">
+          <div class="timeline-marker"><div class="tmarker-dot"></div><div class="tmarker-line"></div></div>
+          <div class="timeline-card"><div class="timeline-version">v1.0 — Released</div><h3>Baseline Classifier</h3><p>Binary webcam classifier with Tkinter GUI, linear SVM, and sample capture.</p><div class="tag-row"><span class="tag green">Live webcam preview</span><span class="tag green">2-class SVM</span><span class="tag green">Manual &amp; auto predict</span></div></div>
+        </div>
+        <div class="timeline-item active reveal">
+          <div class="timeline-marker"><div class="tmarker-dot pulse"></div><div class="tmarker-line"></div></div>
+          <div class="timeline-card active-card"><div class="timeline-version">v2.0 — Current</div><h3>Tier 1 — Vision AI</h3><p>Face detection, 7-class emotion analysis, unlimited classification, and confidence scoring.</p><div class="tag-row"><span class="tag green">Face bounding box</span><span class="tag green">Emotion Analysis</span><span class="tag green">Multi-class SVM</span><span class="tag green">Web interface</span></div></div>
+        </div>
+        <div class="timeline-item pending reveal">
+          <div class="timeline-marker"><div class="tmarker-dot dim"></div><div class="tmarker-line"></div></div>
+          <div class="timeline-card"><div class="timeline-version">v3.0 — Planned</div><h3>Tier 2 — Advanced AI</h3><p>Hand gesture, head pose, drowsiness detection, and age/gender estimation via MediaPipe.</p><div class="tag-row"><span class="tag amber">Hand gestures</span><span class="tag amber">Head pose</span><span class="tag amber">Eye blink</span><span class="tag amber">Age &amp; gender</span></div></div>
+        </div>
+        <div class="timeline-item pending reveal">
+          <div class="timeline-marker"><div class="tmarker-dot dim"></div></div>
+          <div class="timeline-card"><div class="timeline-version">v4.0 — Planned</div><h3>Tier 3 — Polish &amp; UX</h3><p>FPS counter, session recording, data augmentation, background blur, and snapshot export.</p><div class="tag-row"><span class="tag blue">FPS overlay</span><span class="tag blue">Recording</span><span class="tag blue">Augmentation</span><span class="tag blue">Snapshot</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GET STARTED -->
+    <section id="install" class="section">
+      <div class="section-header">
+        <span class="tier-badge baseline">🚀 Get Started</span>
+        <h2>Installation &amp; Usage</h2>
+        <p>Up and running in under two minutes.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step reveal"><div class="step-num">01</div><div class="step-body"><h3>Clone &amp; create a virtual environment</h3><pre><code>git clone &lt;repo-url&gt;
+cd Python-AI-Projects
+python -m venv venv
+venv\Scripts\activate  # Windows
+source venv/bin/activate  # macOS/Linux</code></pre></div></div>
+        <div class="step reveal"><div class="step-num">02</div><div class="step-body"><h3>Install dependencies</h3><pre><code>pip install -r CameraClassifier/requirements.txt
+pip install flask  # for the web server
+pip install fer tensorflow  # for emotion analysis</code></pre></div></div>
+        <div class="step reveal"><div class="step-num">03</div><div class="step-body"><h3>Start the web server</h3><pre><code>cd CameraClassifier/website
+python server.py
+# Open http://localhost:5000</code></pre></div></div>
+        <div class="step reveal"><div class="step-num">04</div><div class="step-body"><h3>Or run the desktop app</h3><pre><code># From repo root
+python -m CameraClassifier.main</code></pre></div></div>
+      </div>
+      <div class="dep-table reveal">
+        <h3>Dependency Quick Reference</h3>
+        <table>
+          <thead><tr><th>Package</th><th>Version</th><th>Required for</th></tr></thead>
+          <tbody>
+            <tr><td><code>opencv-python</code></td><td>4.10.0.84</td><td>All features</td></tr>
+            <tr><td><code>scikit-learn</code></td><td>1.5.2</td><td>SVM training &amp; prediction</td></tr>
+            <tr><td><code>numpy</code></td><td>≥ 2.0</td><td>Image arrays</td></tr>
+            <tr><td><code>Pillow</code></td><td>10.4.0</td><td>Desktop app canvas</td></tr>
+            <tr><td><code>flask</code></td><td>≥ 3.0</td><td>Web server</td></tr>
+            <tr><td><code>fer</code></td><td>≥ 22.5.1</td><td>Emotion Analysis</td></tr>
+            <tr><td><code>tensorflow</code></td><td>≥ 2.13.0</td><td>Emotion Analysis</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>CameraClassifier v2.0</span><span>·</span>
+        <span>Inspired by NeuralNine · Extended with Tier 1–3 features</span><span>·</span>
+        <span>Python 3.9+</span>
+      </div>
+    </footer>
+
+  </main>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

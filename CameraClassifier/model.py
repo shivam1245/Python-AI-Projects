@@ -6,14 +6,18 @@ from sklearn import svm
 
 class Model:
     def __init__(self):
-        self.clf = svm.SVC(kernel='linear')
+        # probability=True enables predict_proba() for confidence scores
+        self.clf = svm.SVC(kernel='linear', probability=True)
         self.trained = False
 
-    def train_model(self, counters):
-        X = []
-        y = []
-        for label in [1, 2]:
-            folder = str(label)
+    def train_model(self, num_classes: int, base_dir: str = '.'):
+        """
+        Load images from folders 1/ through num_classes/ under base_dir, train a linear SVM.
+        base_dir defaults to '.' so existing Tkinter app behaviour is unchanged.
+        """
+        X, y = [], []
+        for label in range(1, num_classes + 1):
+            folder = os.path.join(base_dir, str(label))
             if not os.path.exists(folder):
                 continue
             for fname in os.listdir(folder):
@@ -26,17 +30,25 @@ class Model:
                 img = cv.resize(img, (50, 50))
                 X.append(img.flatten())
                 y.append(label)
-        if len(X) >= 2 and len(set(y)) >= 2:
+
+        unique_classes = set(y)
+        if len(X) >= 2 and len(unique_classes) >= 2:
             self.clf.fit(np.array(X), np.array(y))
             self.trained = True
+            print(f"Model trained on {len(X)} samples across {len(unique_classes)} classes.")
         else:
-            print("Not enough data to train. Capture images for both classes.")
+            print("Not enough data to train. Capture samples for at least 2 classes.")
 
-    def predict(self, frame_tuple):
-        # frame_tuple can be (ret, frame) or just frame, handle both
-        frame = frame_tuple[1] if isinstance(frame_tuple, tuple) else frame_tuple
+    def predict(self, frame) -> tuple[int, float]:
+        """
+        Classify an RGB frame.
+        Returns (class_label, confidence) where class_label is 0 if untrained.
+        """
+        frame = frame[1] if isinstance(frame, tuple) else frame
         if frame is None or not self.trained:
-            return 0
+            return 0, 0.0
         gray = cv.cvtColor(frame, cv.COLOR_RGB2GRAY)
         gray = cv.resize(gray, (50, 50)).flatten().reshape(1, -1)
-        return int(self.clf.predict(gray)[0])
+        pred = int(self.clf.predict(gray)[0])
+        confidence = float(max(self.clf.predict_proba(gray)[0]))
+        return pred, confidence
