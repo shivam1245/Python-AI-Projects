@@ -8,23 +8,26 @@ A real-time webcam classifier with a Tkinter GUI and full web interface. Capture
 
 | Feature | Description |
 |---|---|
-| **Face Detection** | Toggle a green bounding box drawn around every detected face using OpenCV's Haar cascade. No extra dependencies. |
-| **Emotion Analysis** | Toggle FER-powered emotion detection (happy, sad, angry, fear, surprise, disgust, neutral). Orange box + label overlaid per face; dominant emotion shown in the GUI. |
-| **Multi-Class SVM** | Classify more than 2 things. "Add Class" dynamically adds capture buttons and class folders. |
-| **Confidence Score** | SVM now reports prediction confidence (%) alongside the class label. |
+| **Flask Web UI** | Three-tab browser interface — Feature Overview, Live Demo, Object Detection. No GUI needed. |
+| **Object Detection** | YOLOv8n detects 80 COCO object classes in real-time with colored bounding boxes. |
+| **Face Detection** | Toggle a green bounding box drawn around every detected face using OpenCV's Haar cascade. |
+| **Emotion Analysis** | FER-powered 7-emotion detection (happy, sad, angry, fear, surprise, disgust, neutral). |
+| **Multi-Class SVM** | Classify any number of things. "Add Class" dynamically adds capture buttons and folders. |
+| **Confidence Score** | SVM reports prediction confidence (%) alongside the class label. |
 
 ---
 
 ## Features
 
-- Live 640×480 webcam preview (OpenCV + Tkinter canvas)
-- Capture labeled samples for **any number of classes**
+- Live 640×480 webcam preview in browser (MJPEG stream) and Tkinter GUI
+- **Three web pages** — Feature Overview, Live Demo, Object Detection
+- Capture labeled samples for **any number of classes** via browser or GUI
 - Train a **linear SVM** on collected grayscale thumbnails
 - Manual and **auto prediction** modes
-- **Face Detection** toggle — green bounding box via Haar cascade (no extra packages)
-- **Emotion Analysis** toggle — 7-class FER model with lazy TensorFlow load
-- Confidence % displayed per prediction
-- Reset to clear all samples and restart
+- **Face Detection** toggle — green bounding box via Haar cascade
+- **Emotion Analysis** toggle — 7-class FER model, lazy TensorFlow load
+- **Object Detection** — YOLOv8n, 80 COCO classes, confidence threshold slider
+- Standalone **CLI training script** with grid search and data augmentation
 
 ---
 
@@ -34,9 +37,16 @@ A real-time webcam classifier with a Tkinter GUI and full web interface. Capture
 - A functional webcam
 - OS: Windows, macOS, Linux
 
-### Install dependencies
+---
+
+## Installation
+
+### Step 1 — Clone and create virtual environment
 
 ```bash
+git clone https://github.com/shivam1245/Python-AI-Projects.git
+cd Python-AI-Projects
+
 python -m venv venv
 
 # Windows
@@ -44,15 +54,68 @@ venv\Scripts\activate
 
 # macOS / Linux
 source venv/bin/activate
+```
 
+### Step 2 — Install core dependencies
+
+```bash
 pip install -r CameraClassifier/requirements.txt
 ```
 
-> **Note — Emotion Analysis:** The first time you toggle "Emotion ON", TensorFlow initializes the FER model. This takes 5–15 seconds and briefly freezes the GUI. Subsequent toggles are instant.
+### Step 3 — Install web server dependencies
+
+```bash
+pip install -r CameraClassifier/website/requirements.txt
+```
+
+### Step 4 — Install optional ML features
+
+```bash
+# Emotion Analysis (FER + TensorFlow)
+pip install fer tensorflow
+
+# Object Detection (YOLOv8 — downloads ~6 MB weights on first use)
+pip install ultralytics
+```
+
+> **Important — Multiple Python versions:** If you have Python 3.9, 3.10, 3.11, and 3.12 installed, make sure you install packages into the **same Python that runs the server**. The server prints its Python path on startup. Use that exact path to install, e.g.:
+> ```bash
+> "C:\Users\<you>\AppData\Local\Programs\Python\Python312\python.exe" -m pip install fer tensorflow ultralytics
+> ```
 
 ---
 
 ## How to Run
+
+### Option A — Web Interface (recommended)
+
+```bash
+cd CameraClassifier/website
+python server.py
+```
+
+Then open **http://localhost:5000** in your browser.
+
+The server prints which Python it is using and which features are available:
+
+```
+  CameraClassifier Web Server
+  ─────────────────────────────
+  Python    →  C:\...\python.exe
+  Overview  →  http://localhost:5000/
+  Live Demo →  http://localhost:5000/demo
+  Objects   →  http://localhost:5000/object
+  Emotion available: True
+  YOLO available:    True
+```
+
+| Page | URL | Description |
+|---|---|---|
+| Feature Overview | `http://localhost:5000/` | Docs, feature cards, install guide |
+| Live Demo | `http://localhost:5000/demo` | Capture → Train → Predict in browser |
+| Object Detection | `http://localhost:5000/object` | YOLOv8 real-time detection |
+
+### Option B — Tkinter GUI (desktop)
 
 From the repository root:
 
@@ -60,9 +123,10 @@ From the repository root:
 python -m CameraClassifier.main
 ```
 
-Or from inside the `CameraClassifier/` folder:
+Or from inside `CameraClassifier/`:
 
 ```bash
+cd CameraClassifier
 python main.py
 ```
 
@@ -70,7 +134,25 @@ On startup you will be prompted to name your first two classes (e.g. "Open Hand"
 
 ---
 
-## Usage
+## Usage — Web Interface
+
+### Live Demo page (`/demo`)
+
+1. **Add classes** — type a name in the input box and click **+ Add**.
+2. **Capture samples** — point your camera at the object/gesture and click **📸 Capture** (aim for 20–50 per class).
+3. **Train** — click **🧠 Train Model** and wait for the status bar to show "Trained".
+4. **Predict** — click **🎯 Predict Once** for a single result, or enable **🔁 Auto Predict** for continuous classification.
+5. **Toggles** — enable **👤 Face Detect** (green boxes), **😊 Emotion Analysis** (orange boxes + emotion label), independently.
+
+### Object Detection page (`/object`)
+
+1. Click **Enable Detection** — YOLOv8n model loads (~2–5 seconds on first run, downloads weights if needed).
+2. Adjust the **Min. Confidence** slider to filter low-confidence detections.
+3. Detected objects appear in the side panel grouped by class with confidence bars.
+
+---
+
+## Usage — Tkinter GUI
 
 ### 1. Collect Samples
 
@@ -89,19 +171,18 @@ Click **Train Model**. The SVM trains on all saved samples across all classes.
 
 ### 4. Face Detection
 
-Click **Face Detect: ON** to overlay a green bounding box on each detected face. Works independently of prediction and emotion analysis.
+Click **Face Detect: ON** to overlay a green bounding box on each detected face.
 
 ### 5. Emotion Analysis
 
 Click **Emotion: ON** to enable the FER model:
-- An orange bounding box appears around each face.
-- The dominant emotion and confidence are shown both on the video feed and in the **EMOTION** label below the canvas.
-- The model re-analyzes every 10 frames (~150 ms) to keep the UI responsive.
-- Requires `fer` and `tensorflow` (`pip install fer tensorflow`).
+- An orange bounding box appears around each face with the dominant emotion label.
+- Re-analyzes every 10 frames (~150 ms) to keep the UI responsive.
+- Requires `fer` and `tensorflow`.
 
 ### 6. Reset
 
-Click **Reset** to delete all captured images, clear all class buttons, reset the model, and re-prompt for two starting class names.
+Click **Reset** to delete all captured images, clear all class buttons, and reset the model.
 
 ---
 
@@ -349,6 +430,7 @@ Then go to `http://localhost:5000/demo` → click **Predict Once** or enable **A
 No webcam or GUI required:
 
 ```bash
+cd Python-AI-Projects
 python -m CameraClassifier.test_camera_classifier
 ```
 
@@ -364,9 +446,37 @@ The tests cover:
 
 ## Troubleshooting
 
+### Web Server
+
+**Flask server won't start**
+- Make sure you installed web requirements: `pip install -r CameraClassifier/website/requirements.txt`
+- Run from the `website/` folder: `cd CameraClassifier/website && python server.py`
+
+**`fer` / `ultralytics` not found even after pip install**
+- You have multiple Python versions installed. The server prints which Python it uses at startup:
+  ```
+  Python  →  C:\Users\you\AppData\Local\Programs\Python\Python312\python.exe
+  ```
+- Install into that exact Python:
+  ```bash
+  "C:\...\python.exe" -m pip install fer tensorflow ultralytics
+  ```
+
+**Emotion toggle says "not installed" on the web UI**
+- Restart the server after installing `fer` — the availability check re-runs automatically on each toggle click now, so you may not even need to restart.
+
+**Object Detection toggle — model loads slowly**
+- Expected on first run: YOLOv8n downloads ~6 MB of weights from the internet. Subsequent loads use the local cache (`~/.cache/ultralytics/`).
+
+**Camera feed shows "Camera starting…" black screen**
+- The camera takes 1–3 seconds to warm up. If it stays black, another app may be holding the camera.
+- Windows: check Task Manager for other camera apps.
+- macOS: grant Python camera permissions in System Settings → Privacy → Camera.
+
+### GUI (Tkinter)
+
 **Webcam not opening / black screen**
 - Another app may be using the camera. Close it and retry.
-- macOS: grant Terminal/Python camera permissions in System Settings → Privacy → Camera.
 - Linux/Wayland: check `/dev/video*` access; try `index=1` in `camera.py`.
 
 **Tkinter import errors**
@@ -379,9 +489,6 @@ The tests cover:
 
 **Emotion toggle freezes the GUI briefly**
 - Expected — TensorFlow loads the FER model on first activation (5–15 seconds). Subsequent toggles are instant.
-
-**`fer` or `tensorflow` not found**
-- Run: `pip install fer tensorflow`
 
 **Pillow ANTIALIAS warning**
 - The code targets Pillow 10.x (`Resampling.LANCZOS`) with a fallback for older versions.
